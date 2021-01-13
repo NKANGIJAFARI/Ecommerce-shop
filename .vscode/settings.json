@@ -1,3 +1,15 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "prettier.useTabs": true,
+    "prettier.jsxBracketSameLine": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "editor.formatOnSave": true,
+    "javascript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": true,
+    "html.format.contentUnformatted": "",
+    "html.format.indentInnerHtml": true,
+    "html.format.indentHandlebars": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    
 }
