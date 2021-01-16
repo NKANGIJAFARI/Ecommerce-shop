@@ -32,6 +32,8 @@ const ProductScreen = ({ match, history }) => {
 	}, [match.params.id]);
 
 	//Add to cart handler will manager the ad to cart button
+	//Whenever the addToCart is clicked, it gets the match.params.id on
+	//the products screen, then forward to cart page
 
 	const addToCartHandler = () => {
 		history.push(`/cart/${match.params.id}?qty=${quantity}`);
