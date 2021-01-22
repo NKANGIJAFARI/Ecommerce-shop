@@ -13,7 +13,6 @@ const HomeScreen = () => {
 	//We use a useSelector to select which part of the global state we need to use
 
 	const productList = useSelector((state) => state.productList);
-	console.log(productList);
 
 	//Lets destructure from the productList
 	const { loading, error, products } = productList;

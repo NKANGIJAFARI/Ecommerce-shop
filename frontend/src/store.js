@@ -9,6 +9,7 @@ import {
 } from './reducers/productReducers';
 
 import { cartReducer } from './reducers/cartReducers';
+import { userLoginReducer } from './reducers/userReducers';
 
 //-------------------------------------------
 
@@ -16,14 +17,20 @@ const reducer = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
 	cart: cartReducer,
+	userLogin: userLoginReducer,
 });
 
 const cartItemsFromLStorage = localStorage.getItem('cartItems')
 	? JSON.parse(localStorage.getItem('cartItems'))
 	: [];
 
+const userInfoFromLStorage = localStorage.getItem('userInfo')
+	? JSON.parse(localStorage.getItem('cartItems'))
+	: null;
+
 const initialState = {
 	cart: { cartItems: cartItemsFromLStorage },
+	userLogin: { userInfo: userInfoFromLStorage },
 };
 
 const middleware = [thunk];
