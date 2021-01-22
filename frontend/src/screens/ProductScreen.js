@@ -29,7 +29,7 @@ const ProductScreen = ({ match, history }) => {
 
 	useEffect(() => {
 		dispatch(listProductDetails(match.params.id));
-	}, [match.params.id]);
+	}, [dispatch, match.params.id]);
 
 	//Add to cart handler will manager the ad to cart button
 	//Whenever the addToCart is clicked, it gets the match.params.id on

@@ -1,0 +1,54 @@
+This is another option to create Users in the Users controller
+
+// @desc   	Create a user
+//@Route    Post /api/users
+//@access   Public
+
+const registerUser = asyncHandler(async (req, res) => {
+	//Destructure email and password from the body entered
+	const { email, password, name } = req.body;
+
+	//Get the user using the User Model by finding a user with that email entered
+	const userExists = await User.findOne({ email });
+
+	if (userExists) {
+		res.status(400);
+		throw new Error('Email already taken');
+	}
+
+	if (!userExists) {
+		try {
+			const userFields = {};
+
+			if (name) {
+				userFields.name = name;
+			}
+			if (email) {
+				userFields.email = email;
+			}
+			if (password) {
+				const salt = await bcrypt.genSalt(10);
+				const harshedPassword = await bcrypt.hash(password, salt);
+
+				userFields.password = harshedPassword;
+			}
+
+			const createdUser = await User.create(userFields);
+
+			if (createdUser) {
+				res.status(201).json({
+					_id: createdUser._id,
+					name: createdUser.name,
+					email: createdUser.email,
+					isAdmin: createdUser.isAdmin,
+                    token: generateToken(user._id),
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	} else {
+		res.status(401);
+		throw new Error('Invalid email or password');
+	}
+});

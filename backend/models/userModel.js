@@ -39,6 +39,22 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
 };
 
+/*This is a method the harsh the password whenever the user tries to
+create an account or even when they try to change their passwords */
+
+//pre('save) means that this should run before saving a user
+userSchema.pre('save', async function (next) {
+	/* First check if the password field is modified, if not, next will cancel
+	the operations of this all function*/
+	if (!this.isModified('password')) {
+		next();
+	}
+
+	//Encrypt the password
+	const salt = await bcrypt.genSalt(10);
+	this.password = await bcrypt.hash(this.password, salt);
+});
+
 const User = mongoose.model('User', userSchema);
 
 export default User;
