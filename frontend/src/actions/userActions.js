@@ -5,7 +5,7 @@ import {
 	USER_LOGIN_SUCCESS,
 	USER_LOGOUT,
 } from '../constants/userConstants';
-export const Login = (email, password) => async (displtch) => {
+export const Login = (email, password) => async (dispatch) => {
 	try {
 		dispatch({
 			type: USER_LOGIN_REQUEST,
@@ -17,7 +17,11 @@ export const Login = (email, password) => async (displtch) => {
 			},
 		};
 
-		const { data } = await axios.post('/api/users/login');
+		const { data } = await axios.post(
+			'/api/users/login',
+			{ email, password },
+			config
+		);
 
 		dispatch({
 			type: USER_LOGIN_SUCCESS,

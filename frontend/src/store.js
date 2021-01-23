@@ -33,6 +33,7 @@ const initialState = {
 	userLogin: { userInfo: userInfoFromLStorage },
 };
 
+//Initialise the store
 const middleware = [thunk];
 
 const store = createStore(
