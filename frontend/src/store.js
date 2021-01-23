@@ -9,7 +9,7 @@ import {
 } from './reducers/productReducers';
 
 import { cartReducer } from './reducers/cartReducers';
-import { userLoginReducer } from './reducers/userReducers';
+import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 
 //-------------------------------------------
 
@@ -18,16 +18,20 @@ const reducer = combineReducers({
 	productDetails: productDetailsReducer,
 	cart: cartReducer,
 	userLogin: userLoginReducer,
+	userRegister: userRegisterReducer,
 });
 
+//Check if there are cart items in the local storage.
 const cartItemsFromLStorage = localStorage.getItem('cartItems')
 	? JSON.parse(localStorage.getItem('cartItems'))
 	: [];
 
+//Check if there are user Info in the local storage.
 const userInfoFromLStorage = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
 	: null;
 
+//The initial state will be the data in the local storage
 const initialState = {
 	cart: { cartItems: cartItemsFromLStorage },
 	userLogin: { userInfo: userInfoFromLStorage },
