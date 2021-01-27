@@ -16,9 +16,9 @@ const RegisterScreen = ({ location, history }) => {
 
 	const dispatch = useDispatch();
 	//Get userLogin state.
-	const userLogin = useSelector((state) => state.userLogin);
+	const userRegister = useSelector((state) => state.userRegister);
 
-	const { loading, error, userInfo } = userLogin;
+	const { loading, error, userInfo } = userRegister;
 
 	/*If we need to redirect the user when they click a button, we use this redirect */
 	const redirect = location.search ? location.search.split('=')[1] : '/';

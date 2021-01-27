@@ -88,4 +88,38 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-export { authUser, getUserProfile, registerUser };
+// @desc    Update user profile
+//@Route    Put /api/users/profile
+//@access   Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+	//Go to database and check for the user that is to be updated
+	const user = await User.findById(req.user._id);
+
+	//If the user exists, do the below
+	if (user) {
+		user.name = req.body.name || user.name;
+		user.email = req.body.email || user.email;
+
+		//For the password, let0s first check if
+		//user entered new one in the form
+		if (req.body.password) {
+			user.password = req.body.password;
+		}
+
+		const updatedUser = await user.save();
+
+		res.json({
+			_id: updatedUser.id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+			token: generateToken(updatedUser._id),
+		});
+	} else {
+		res.status(404);
+
+		throw new Error('User not found');
+	}
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile };
