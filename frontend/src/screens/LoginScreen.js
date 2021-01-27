@@ -19,6 +19,7 @@ const LoginScreen = ({ location, history }) => {
 
 	/*If we need to redirect the user when they click a button, we use this redirect */
 	const redirect = location.search ? location.search.split('=')[1] : '/';
+	console.log('user info is', userInfo);
 
 	useEffect(() => {
 		//Whenever userInfo is available, let redirect the user
@@ -67,8 +68,8 @@ const LoginScreen = ({ location, history }) => {
 
 			<Row className='py-3'>
 				<Col>
-					New Customer?{' '}
-					<Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+					New Customer? {console.log('Redirect', redirect)}
+					<Link to={userInfo ? `/register?redirect=${redirect}` : '/register'}>
 						Register
 					</Link>
 				</Col>
