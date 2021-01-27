@@ -25,7 +25,6 @@ const RegisterScreen = ({ location, history }) => {
 
 	useEffect(() => {
 		//Whenever userInfo is available, let redirect the user
-		console.log('user info is', userInfo);
 
 		if (userInfo) {
 			history.push(redirect);
@@ -38,7 +37,6 @@ const RegisterScreen = ({ location, history }) => {
 
 		//Check if the passwords match
 		if (password !== confirmPassword) {
-			console.log('This is submited');
 			setMessage("Password doesn't match");
 		} else {
 			//Dispatch Register here.

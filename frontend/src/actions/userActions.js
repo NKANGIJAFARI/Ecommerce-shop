@@ -10,6 +10,10 @@ import {
 	USER_DETAILS_SUCCESS,
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_PROFILE_FAIL,
+	UPDATE_USER_DETAILS,
 } from '../constants/userConstants';
 
 //Login actions
@@ -37,9 +41,6 @@ export const Login = (email, password) => async (dispatch) => {
 		});
 
 		localStorage.setItem('userInfo', JSON.stringify(data));
-
-		console.log('This is the row 8data', data);
-		console.log('This is the stringifyed data', JSON.stringify(data));
 	} catch (error) {
 		dispatch({
 			type: USER_LOGIN_FAIL,
@@ -86,9 +87,6 @@ export const Register = (name, email, password) => async (dispatch) => {
 			type: USER_LOGIN_SUCCESS,
 			payload: data,
 		});
-
-		console.log('Data from register', data);
-		localStorage.setItem('userInfo', JSON.stringify(data));
 	} catch (error) {
 		dispatch({
 			type: USER_REGISTER_FAIL,
@@ -124,8 +122,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 		//Make the request to the API
 		const { data } = await axios.get(`/api/users/${id}`, config);
 
-		console.log('Data', data);
-
 		dispatch({
 			type: USER_DETAILS_SUCCESS,
 			payload: data,
@@ -133,6 +129,45 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_DETAILS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+//Get user details actions
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_UPDATE_PROFILE_REQUEST,
+		});
+
+		//Destructure userInfo from the userLogin state
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token
+		const config = {
+			headers: {
+				'content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the request to the API
+		const { data } = await axios.put(`/api/users/profile`, user, config);
+
+		dispatch({
+			type: USER_UPDATE_PROFILE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: USER_UPDATE_PROFILE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

@@ -1,4 +1,5 @@
 import {
+	UPDATE_USER_DETAILS,
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
@@ -64,6 +65,8 @@ export const userUpdateProfileReducer = (state = {}, action) => {
 			return { loading: false, success: true, user: action.payload };
 		case USER_UPDATE_PROFILE_FAIL:
 			return { loading: false, error: action.payload };
+		case UPDATE_USER_DETAILS:
+			return { loading: false, userInfo: action.payload };
 		default:
 			return state;
 	}
