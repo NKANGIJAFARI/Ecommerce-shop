@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -14,14 +13,17 @@ const ProfileScreen = ({ location, history }) => {
 	const [message, setMessage] = useState(null);
 
 	const dispatch = useDispatch();
-	//Get userLogin state.
-	const userDetails = useSelector((state) => state.userDetails);
 
 	//Get the userInfo from the userLogin to verify user is logged in
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	//Get userLogin state.
+
+	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
+
+	console.log('user', user);
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -37,7 +39,7 @@ const ProfileScreen = ({ location, history }) => {
 				setEmail(user.email);
 			}
 		}
-	}, [dispatch, history, userInfo]);
+	}, [dispatch, history, userInfo, user]);
 
 	//Handle what happens when a user click to submit the for details
 	const submitHandler = (e) => {

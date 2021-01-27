@@ -122,7 +122,9 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 		};
 
 		//Make the request to the API
-		const { data } = await axios.post(`/api/users${id}`, config);
+		const { data } = await axios.get(`/api/users/${id}`, config);
+
+		console.log('Data', data);
 
 		dispatch({
 			type: USER_DETAILS_SUCCESS,
