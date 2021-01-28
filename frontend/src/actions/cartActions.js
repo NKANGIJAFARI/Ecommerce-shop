@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants';
+import {
+	CART_ADD_ITEM,
+	CART_REMOVE_ITEM,
+	CART_SAVE_SHIPPING_ADDRESS,
+} from '../constants/cartConstants';
 
 //Add to cart functionality after the onclick is fired.
 /*W e implemented the getState which helps us get the entire state tree
@@ -34,4 +38,16 @@ export const removeFromCart = (productId) => async (dispatch, getState) => {
 	});
 
 	localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+};
+
+/*-------------------------------------------------------------*/
+//Save shipping address
+
+export const saveShippingAddress = (data) => async (dispatch) => {
+	dispatch({
+		type: CART_SAVE_SHIPPING_ADDRESS,
+		payload: data,
+	});
+
+	localStorage.setItem('shippingAdress', JSON.stringify(data));
 };
