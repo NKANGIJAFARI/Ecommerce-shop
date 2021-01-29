@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
-import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
 
 const ProfileScreen = ({ location, history }) => {
 	const [name, setName] = useState('');

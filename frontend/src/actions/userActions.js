@@ -13,7 +13,6 @@ import {
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAIL,
-	UPDATE_USER_DETAILS,
 } from '../constants/userConstants';
 
 //Login actions

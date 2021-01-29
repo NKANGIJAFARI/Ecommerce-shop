@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
-import { saveShippingAddress } from '../actions/cartActions';
+import { savePaymentMethod } from '../actions/cartActions';
+
 import CheckOutSteps from '../components/CheckOutSteps';
 
 const PaymentScreen = ({ history }) => {
@@ -35,14 +35,14 @@ const PaymentScreen = ({ history }) => {
 					<Form.Label as='legend'>Select Method</Form.Label>
 				</Form.Group>
 				<Col>
-					<Form.check
+					<Form.Check
 						type='radio'
 						label='PayPal or Credit Card'
 						id='PayPal'
 						name='paymentMethod'
 						value='PayPal'
 						checked
-						onChange={(e) => setpaymentMethod(e.target.value)}></Form.check>
+						onChange={(e) => setpaymentMethod(e.target.value)}></Form.Check>
 
 					{/*Another payment Method if needded 
                     <Form.check

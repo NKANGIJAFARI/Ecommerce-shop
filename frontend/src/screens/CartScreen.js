@@ -54,13 +54,14 @@ const CartScreen = (props) => {
 						{cartItems.map((item) => (
 							//product is the id
 							<ListGroup.Item key={item.product}>
+								{console.log('We are here', item)}
 								<Row>
 									<Col md={2}>
 										<Image src={item.image} alt={item.name} fluid rounded />
 									</Col>
 
 									<Col md={4}>
-										<Link to={`/product/${item.product}`}>{item.name}</Link>
+										<Link to={`/products/${item.product}`}>{item.name}</Link>
 									</Col>
 									<Col md={2}>${item.price}</Col>
 									<Col md={2}>
