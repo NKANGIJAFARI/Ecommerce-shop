@@ -16,7 +16,10 @@ import {
 	userUpdateProfileReducer,
 } from './reducers/userReducers';
 
-import { orderCreateReducer } from './reducers/orderReducer';
+import {
+	orderCreateReducer,
+	orderDetailsReducer,
+} from './reducers/orderReducer';
 
 //-------------------------------------------
 const reducer = combineReducers({
@@ -28,6 +31,7 @@ const reducer = combineReducers({
 	userDetails: userDetailsReducer,
 	userUpdateProfile: userUpdateProfileReducer,
 	orderCreate: orderCreateReducer,
+	orderDetails: orderDetailsReducer,
 });
 
 //Check if there are cart items in the local storage.
