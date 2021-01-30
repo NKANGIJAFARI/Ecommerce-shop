@@ -19,9 +19,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
 		res.status(400); //Bad request
 		throw new Error('No Order items');
 	} else {
-		//Create an order instance
+		//req.user.id is available because this is a protected route
+
 		const order = new Order({
-			user: req.body.user._id,
+			user: req.user._id,
 			orderItems,
 			shippingAddress,
 			paymentMethod,

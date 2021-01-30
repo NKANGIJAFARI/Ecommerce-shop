@@ -1,10 +1,12 @@
+import axios from 'axios';
+
 import {
 	ORDER_CREATE_REQUEST,
 	ORDER_CREATE_SUCCESS,
 	ORDER_CREATE_FAIL,
 } from '../constants/orderConstants';
 
-export const createNewOrder = (order) => async (dispatch, getState) => {
+export const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: ORDER_CREATE_REQUEST,
@@ -25,8 +27,10 @@ export const createNewOrder = (order) => async (dispatch, getState) => {
 			},
 		};
 
+		console.log('Order data', order);
+
 		//Make the post request to the order API
-		const { data } = await axios.post(`/api/orders`, order, config);
+		const { data } = await axios.post('/api/orders', order, config);
 
 		//If the post request is successful, data will be filled with the response
 		dispatch({
