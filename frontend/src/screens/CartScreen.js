@@ -18,7 +18,7 @@ const CartScreen = (props) => {
 
 	const productId = match.params.id;
 
-	//Get the quantity from the url, /cart/productId?qty="This one is quantity"
+	//Get the quantity from the url, /cart/productId?quantity="This one is quantity"
 	const quantity = location.search ? Number(location.search.split('=')[1]) : 1;
 
 	const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const CartScreen = (props) => {
 						{cartItems.map((item) => (
 							//product is the id
 							<ListGroup.Item key={item.product}>
-								{console.log('We are here', item)}
+								{console.log('We are here', item, item.quantity)}
 								<Row>
 									<Col md={2}>
 										<Image src={item.image} alt={item.name} fluid rounded />
@@ -67,7 +67,8 @@ const CartScreen = (props) => {
 									<Col md={2}>
 										<Form.Control
 											as='select'
-											value={item.quantity}
+											variant='primary'
+											value={Number(item.quantity)}
 											onChange={(e) =>
 												dispatch(
 													addToCart(item.product, Number(e.target.value))

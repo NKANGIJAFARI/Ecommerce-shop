@@ -61,5 +61,5 @@ export const savePaymentMethod = (data) => async (dispatch) => {
 		payload: data,
 	});
 
-	localStorage.setItem('shippingAddress', JSON.stringify(data));
+	// localStorage.setItem('paymentMethod', JSON.stringify(data));
 };

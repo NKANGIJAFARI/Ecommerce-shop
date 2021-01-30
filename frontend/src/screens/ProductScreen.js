@@ -36,7 +36,7 @@ const ProductScreen = ({ match, history }) => {
 	//the products screen, then forward to cart page
 
 	const addToCartHandler = () => {
-		history.push(`/cart/${match.params.id}?qty=${quantity}`);
+		history.push(`/cart/${match.params.id}?quantity=${quantity}`);
 	};
 
 	/*
@@ -101,7 +101,7 @@ const ProductScreen = ({ match, history }) => {
 									product.countInStock > 0 && (
 										<ListGroup.Item>
 											<Row>
-												<Col>Qty: </Col>
+												<Col>Quantity: </Col>
 												<Col>
 													<Form.Control
 														as='select'
