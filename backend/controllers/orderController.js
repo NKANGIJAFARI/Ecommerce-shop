@@ -60,4 +60,33 @@ const getOrderById = asyncHandler(async (req, res) => {
 	}
 });
 
-export { addOrderItems, getOrderById };
+// @desc   	GET Order by ID
+//@Route    GET api/orders/:id
+//@access   Private
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+	/* We get the order Id from the url, In frontend whenever the
+	order is successful, we redirect by "history.push(/orders/id)" */
+
+	const order = await Order.findById(req.params.id);
+
+	if (order) {
+		order.isPaid = true;
+		order.paidAt = Date.now();
+		order.paymentResult = {
+			id: req.body.id,
+			status: req.body.status,
+			update_time: req.body.update_time,
+			email_address: req.body.payer.email_address,
+		};
+
+		//Save the order with the updated information, now is paid
+		const updatedOrder = await order.save();
+
+		//Receive back the updated order as json info
+		res.json(updatedOrder);
+	} else {
+		res.status(404);
+		throw new Error('Order Not Found');
+	}
+});
+export { addOrderItems, getOrderById, updateOrderToPaid };
