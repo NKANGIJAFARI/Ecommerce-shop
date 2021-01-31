@@ -37,7 +37,7 @@ export const orderCreateReducer = (state = {}, action) => {
 //Order Details reducer, will be used to get the details of the order
 
 export const orderDetailsReducer = (
-	state = { orderItems: [], shippingAddress: {} },
+	state = { loading: true, orderItems: [], shippingAddress: {} },
 	action
 ) => {
 	switch (action.type) {
