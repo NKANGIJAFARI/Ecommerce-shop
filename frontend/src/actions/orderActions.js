@@ -103,7 +103,7 @@ export const getOrderDetails = (orderId) => async (dispatch, getState) => {
 //===========================================================================
 //Pay order functionality
 
-export const updateOrderPayment = (orderId, paymentResult) => async (
+export const payOrder = (orderId, paymentResult) => async (
 	dispatch,
 	getState
 ) => {

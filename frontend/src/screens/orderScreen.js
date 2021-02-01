@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails } from '../actions/orderActions';
+import { getOrderDetails, payOrder } from '../actions/orderActions';
 import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 const OrderScreen = ({ match }) => {
 	//Get the order Id from the url
@@ -56,6 +58,8 @@ const OrderScreen = ({ match }) => {
 		};
 
 		if (!order || order._id !== orderId || successPay) {
+			dispatch({ type: ORDER_PAY_RESET });
+
 			dispatch(getOrderDetails(orderId));
 		} else if (!order.isPaid) {
 			if (!window.paypal) {
@@ -69,6 +73,11 @@ const OrderScreen = ({ match }) => {
 	}, [order, orderId, successPay, dispatch]);
 
 	//========================================================================================
+
+	const successPaymentHandler = (paymentResult) => {
+		dispatch(payOrder(orderId, paymentResult));
+		console.log(paymentResult);
+	};
 
 	return (
 		<>
@@ -186,14 +195,19 @@ const OrderScreen = ({ match }) => {
 									<ListGroup.Item>
 										{error && <Message variant='danger'>{error}</Message>}
 									</ListGroup.Item>
-									<ListGroup.Item>
-										<Button
-											type='button'
-											className='btn-block'
-											disabled={order.orderItems === 0}>
-											PLACE ORDER
-										</Button>
-									</ListGroup.Item>
+									{!order.isPaid && (
+										<ListGroup.Item>
+											{loadingPay && <Loader />}
+											{!sdkReady ? (
+												<Loader />
+											) : (
+												<PayPalButton
+													amount={order.totalPrice}
+													onSuccess={successPaymentHandler}
+												/>
+											)}
+										</ListGroup.Item>
+									)}
 								</ListGroup>
 							</Card>
 						</Col>

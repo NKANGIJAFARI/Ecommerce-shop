@@ -77,6 +77,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 			status: req.body.status,
 			update_time: req.body.update_time,
 			email_address: req.body.payer.email_address,
+			purchaseInfo: req.body.purchase_units,
 		};
 
 		//Save the order with the updated information, now is paid
