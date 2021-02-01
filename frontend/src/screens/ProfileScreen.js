@@ -20,7 +20,7 @@ const ProfileScreen = ({ location, history }) => {
 
 	//Get userLogin state.
 	const userDetails = useSelector((state) => state.userDetails);
-	const { loading, error, user } = userDetails;
+	const { loading, error } = userDetails;
 
 	//When the update is successfull,
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
@@ -30,17 +30,17 @@ const ProfileScreen = ({ location, history }) => {
 		if (!userInfo) {
 			history.push('/login');
 		} else {
-			if (!user.name) {
+			if (!userInfo.name) {
 				dispatch(getUserDetails('profile'));
 				/*'profile', according to the route, we get user on "api/users/profile"
                 And the user Id will be got on the userLogin details in the route so here 
                 we just pass in profile so we got to the proflie screen */
 			} else {
-				setName(user.name);
-				setEmail(user.email);
+				setName(userInfo.name);
+				setEmail(userInfo.email);
 			}
 		}
-	}, [dispatch, history, userInfo, user]);
+	}, [dispatch, history, userInfo]);
 
 	//Handle what happens when a user click to submit the for details
 	const submitHandler = (e) => {
@@ -51,7 +51,7 @@ const ProfileScreen = ({ location, history }) => {
 			setMessage("Password doesn't match");
 		} else {
 			//Dispatch updated profile here.
-			dispatch(updateUserProfile({ id: user._id, name, email, password }));
+			dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
 		}
 	};
 	return (

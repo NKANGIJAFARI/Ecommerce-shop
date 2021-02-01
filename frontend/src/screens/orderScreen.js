@@ -1,26 +1,72 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getOrderDetails } from '../actions/orderActions';
+import axios from 'axios';
 
 const OrderScreen = ({ match }) => {
+	//Get the order Id from the url
 	const orderId = match.params.id;
 
 	const dispatch = useDispatch();
+
+	//State to change when we receive the SDK from payPal
+	const [sdkReady, setSDKReady] = useState(false);
 
 	//Get items from the orderDetails
 	const orderDetails = useSelector((state) => state.orderDetails);
 	const { order, loading, error } = orderDetails;
 
+	//Get items from the orderPay state **************************
+	const orderPay = useSelector((state) => state.orderPay);
+	const {
+		success: successPay,
+		loading: loadingPay,
+		error: errorPay,
+	} = orderPay;
+	//************************************************************ */
+
 	useEffect(() => {
 		if (!order || order._id !== orderId) {
 			dispatch(getOrderDetails(orderId));
 		}
-		// eslint-disable-next-line
-	}, [order, orderId]);
+
+		/*=================================================================================
+		To intergrate Paypal 
+		The script is :
+		<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
+		But here we want to get it dynamically.
+		We have a route that access the environment variable that has the client ID.
+		*/
+
+		const addPayPalScript = async () => {
+			const { data: clientId } = await axios.get('/api/config/paypal');
+			const script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.async = true;
+			script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+
+			script.onload = () => {
+				setSDKReady(true);
+			};
+			document.body.appendChild(script);
+		};
+
+		if (!order || order._id !== orderId || successPay) {
+			dispatch(getOrderDetails(orderId));
+		} else if (!order.isPaid) {
+			if (!window.paypal) {
+				addPayPalScript();
+			} else {
+				setSDKReady(true);
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------
+	}, [order, orderId, successPay, dispatch]);
 
 	//========================================================================================
 
