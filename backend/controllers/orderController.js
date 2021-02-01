@@ -92,7 +92,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 });
 
 // @desc   	GET looged in user Order by ID
-//@Route    GET api/orders/myOrders
+//@Route    GET api/orders/myorders
 //@access   Private
 const getUserOrders = asyncHandler(async (req, res) => {
 	/* We get the orders which has the user same as the logged In user id" */

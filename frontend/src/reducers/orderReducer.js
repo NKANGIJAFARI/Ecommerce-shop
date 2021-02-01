@@ -9,6 +9,9 @@ import {
 	ORDER_PAY_SUCCESS,
 	ORDER_PAY_FAIL,
 	ORDER_PAY_RESET,
+	ORDERS_LIST_CLIENT_REQUEST,
+	ORDERS_LIST_CLIENT_SUCCESS,
+	ORDERS_LIST_CLIENT_FAIL,
 } from '../constants/orderConstants';
 
 //=========================================================================
@@ -87,11 +90,34 @@ export const orderPayReducer = (state = {}, action) => {
 				error: action.payload,
 			};
 		case ORDER_PAY_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+//-------------------------------------------------------------------------
+
+//==========================================================================
+//Order Pay reducer, will be used to get the details of the order payment
+
+export const ordersListClientReducer = (state = {}, action) => {
+	switch (action.type) {
+		case ORDERS_LIST_CLIENT_REQUEST:
+			return {
+				loading: true,
+			};
+		case ORDERS_LIST_CLIENT_SUCCESS:
 			return {
 				loading: false,
-				//Reset the state
+				orders: action.payload,
+			};
+		case ORDERS_LIST_CLIENT_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
 			};
 		default:
 			return state;
 	}
 };
+//-------------------------------------------------------------------------

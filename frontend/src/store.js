@@ -20,6 +20,7 @@ import {
 	orderCreateReducer,
 	orderDetailsReducer,
 	orderPayReducer,
+	ordersListClientReducer,
 } from './reducers/orderReducer';
 
 //-------------------------------------------
@@ -34,6 +35,7 @@ const reducer = combineReducers({
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	orderPay: orderPayReducer,
+	ordersListClient: ordersListClientReducer,
 });
 
 //Check if there are cart items in the local storage.
