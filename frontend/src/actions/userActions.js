@@ -15,8 +15,12 @@ import {
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAIL,
 	USER_DETAILS_RESET,
+	USER_LIST_REQUEST,
+	USER_LIST_SUCCESS,
+	USER_LIST_FAIL,
 } from '../constants/userConstants';
 
+//====================================================================================
 //Login actions
 export const Login = (email, password) => async (dispatch) => {
 	try {
@@ -52,7 +56,9 @@ export const Login = (email, password) => async (dispatch) => {
 		});
 	}
 };
+//--------------------------------------------------------------------------------------
 
+//====================================================================================
 //Logout actions
 export const logout = () => (dispatch) => {
 	localStorage.removeItem('userInfo');
@@ -60,7 +66,9 @@ export const logout = () => (dispatch) => {
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: ORDERS_LIST_CLIENT_RESET });
 };
+//--------------------------------------------------------------------------------------
 
+//====================================================================================
 //Register actions
 export const Register = (name, email, password) => async (dispatch) => {
 	try {
@@ -100,7 +108,9 @@ export const Register = (name, email, password) => async (dispatch) => {
 		});
 	}
 };
+//--------------------------------------------------------------------------------------s
 
+//====================================================================================
 //Get user details actions
 export const getUserDetails = (id) => async (dispatch, getState) => {
 	try {
@@ -139,8 +149,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 		});
 	}
 };
+//--------------------------------------------------------------------------------------
 
-//Get user details actions
+//====================================================================================
+//Update user profile
 export const updateUserProfile = (user) => async (dispatch, getState) => {
 	try {
 		dispatch({
@@ -189,3 +201,50 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 		});
 	}
 };
+//--------------------------------------------------------------------------------------
+
+//====================================================================================
+//Update user profile
+export const listUsers = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_LIST_REQUEST,
+		});
+
+		//Destructure userInfo from the userLogin state
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the request to the API
+		const { data } = await axios.put(`/api/users`, config);
+
+		// dispatch({
+		// 	type: USER_LOGIN_SUCCESS,
+		// 	payload: data,
+		// });
+		dispatch({
+			type: USER_LIST_SUCCESS,
+			payload: data,
+		});
+
+		// localStorage.setItem('userInfo', JSON.stringify(data));
+	} catch (error) {
+		dispatch({
+			type: USER_LIST_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//--------------------------------------------------------------------------------------
