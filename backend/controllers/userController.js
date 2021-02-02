@@ -89,11 +89,13 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get all users
-//@Route     Get /api/users/profile
-//@access   Private
+//@Route    Get /api/users
+//@access   Private and only to admin
 const getUsers = asyncHandler(async (req, res) => {
+	//Search for all the users
 	const users = await User.find({});
 
+	// When you receive the users, send a JSON back with a list of all user
 	res.json(users);
 });
 
