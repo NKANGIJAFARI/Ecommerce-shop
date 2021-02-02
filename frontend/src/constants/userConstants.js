@@ -20,10 +20,20 @@ export const USER_UPDATE_PROFILE_RESET = 'USER_UPDATE_PROFILE_RESET';
 //=============================================================================
 //Get all the users
 
-export const USER_LIST_REQUEST = 'USER_REGISTER_REQUEST';
-export const USER_LIST_SUCCESS = 'USER_REGISTER_SUCCESS';
-export const USER_LIST_FAIL = 'USER_REGISTER_FAIL';
-export const USER_LIST_RESET = 'USER_REGISTER_RESET';
+export const USER_LIST_REQUEST = 'USER_LIST_REQUEST';
+export const USER_LIST_SUCCESS = 'USER_LIST_SUCCESS';
+export const USER_LIST_FAIL = 'USER_LIST_FAIL';
+export const USER_LIST_RESET = 'USER_LIST_RESET';
+
+//--------------------------------------------------------------------------
+
+//=============================================================================
+//Delete a user, done by only admins
+
+export const USER_DELETE_REQUEST = 'USER_DELETE_REQUEST';
+export const USER_DELETE_SUCCESS = 'USER_DELETE_SUCCESS';
+export const USER_DELETE_FAIL = 'USER_DELETE_FAIL';
+export const USER_DELETE_RESET = 'USER_DELETE_RESET';
 
 //--------------------------------------------------------------------------
 
