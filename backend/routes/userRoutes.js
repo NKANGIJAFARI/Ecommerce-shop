@@ -3,6 +3,7 @@ const router = express.Router();
 
 import {
 	authUser,
+	deleteUser,
 	getUserProfile,
 	getUsers,
 	registerUser,
@@ -18,6 +19,9 @@ router
 	.route('/profile')
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile);
+
+//Route to delete a user by an admin
+router.route('/:id').delete(protect, isAdmin, deleteUser);
 
 //Home routes
 router.route('/').post(registerUser).get(protect, isAdmin, getUsers);

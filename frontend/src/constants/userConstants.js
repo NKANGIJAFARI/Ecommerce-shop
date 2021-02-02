@@ -23,6 +23,7 @@ export const USER_UPDATE_PROFILE_RESET = 'USER_UPDATE_PROFILE_RESET';
 export const USER_LIST_REQUEST = 'USER_REGISTER_REQUEST';
 export const USER_LIST_SUCCESS = 'USER_REGISTER_SUCCESS';
 export const USER_LIST_FAIL = 'USER_REGISTER_FAIL';
+export const USER_LIST_RESET = 'USER_REGISTER_RESET';
 
 //--------------------------------------------------------------------------
 
