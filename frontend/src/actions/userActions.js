@@ -19,6 +19,9 @@ import {
 	USER_LIST_SUCCESS,
 	USER_LIST_FAIL,
 	USER_LIST_RESET,
+	USER_DELETE_REQUEST,
+	USER_DELETE_SUCCESS,
+	USER_DELETE_FAIL,
 } from '../constants/userConstants';
 
 //====================================================================================
@@ -242,6 +245,49 @@ export const listUsers = () => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_LIST_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//--------------------------------------------------------------------------------------
+
+//====================================================================================
+//Delete users by admin
+export const deleteUsers = (userId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_DELETE_REQUEST,
+		});
+
+		//Destructure userInfo from the userLogin state
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the request to the API
+		await axios.delete(`/api/users/${userId}`, config);
+
+		// dispatch({
+		// 	type: USER_LOGIN_SUCCESS,
+		// 	payload: data,
+		// });
+		dispatch({
+			type: USER_DELETE_SUCCESS,
+		});
+	} catch (error) {
+		dispatch({
+			type: USER_DELETE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
