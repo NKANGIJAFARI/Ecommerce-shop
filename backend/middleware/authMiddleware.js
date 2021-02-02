@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 
+//Protect middleware will help verify that the user is logged In ========
 const protect = asyncHandler(async (req, res, next) => {
 	let token;
 
@@ -33,5 +34,17 @@ const protect = asyncHandler(async (req, res, next) => {
 		throw new Error('Not authorized, no token');
 	}
 });
+//-----------------------------------------------------------------------
 
-export { protect };
+// =========================================================================
+// Check that the user is admin
+
+const isAdmin = (req, res, next) => {
+	if ((req.user, req.user.isAdmin)) {
+		next();
+	} else {
+		res.status(401);
+		throw new Error('Not authorized, only admins have access');
+	}
+};
+export { protect, isAdmin };

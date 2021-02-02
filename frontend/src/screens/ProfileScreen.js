@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Table } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
+import { listClientOrders } from '../actions/orderActions';
 
-const ProfileScreen = ({ location, history }) => {
+const ProfileScreen = ({ history }) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -26,6 +28,13 @@ const ProfileScreen = ({ location, history }) => {
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
 	const { success } = userUpdateProfile;
 
+	const ordersListClient = useSelector((state) => state.ordersListClient);
+	const {
+		loading: loadingOrders,
+		error: errorOrders,
+		orders,
+	} = ordersListClient;
+
 	useEffect(() => {
 		if (!userInfo) {
 			history.push('/login');
@@ -34,8 +43,11 @@ const ProfileScreen = ({ location, history }) => {
 				dispatch(getUserDetails('profile'));
 				/*'profile', according to the route, we get user on "api/users/profile"
                 And the user Id will be got on the userLogin details in the route so here 
-                we just pass in profile so we got to the proflie screen */
+				we just pass in profile so we got to the proflie screen */
+
+				//Get all client's orders
 			} else {
+				dispatch(listClientOrders()); //Changed, not like
 				setName(userInfo.name);
 				setEmail(userInfo.email);
 			}
@@ -106,6 +118,54 @@ const ProfileScreen = ({ location, history }) => {
 			</Col>
 			<Col md={9}>
 				<h3>My Orders</h3>
+				{loadingOrders ? (
+					<Loader />
+				) : errorOrders ? (
+					<Message variant='danger'>{errorOrders}</Message>
+				) : (
+					<Table stripped borded hover responsive className='table-sm'>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>DATE</th>
+								<th>TOTAL</th>
+								<th>PAID</th>
+								<th>DELIVERED</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{orders.map((order) => (
+								<tr key={order._id}>
+									<td>{order._id}</td>
+									<td>{order.createdAt.substring(0, 10)}</td>
+									<td>{order.totalPrice}</td>
+									<td>
+										{order.isPaid ? (
+											order.paidAt.substring(0, 10)
+										) : (
+											<i className='fas fa-times' style={{ color: 'red' }}></i>
+										)}
+									</td>
+									<td>
+										{order.isDelivered ? (
+											order.deliveredAt.substring(0, 10)
+										) : (
+											<i className='fas fa-times' style={{ color: 'red' }}></i>
+										)}
+									</td>
+									<td>
+										<LinkContainer to={`/order/${order._id}`}>
+											<Button variant='light' className='btn-sm'>
+												Details
+											</Button>
+										</LinkContainer>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
+				)}
 			</Col>
 		</Row>
 	);

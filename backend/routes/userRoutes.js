@@ -4,10 +4,11 @@ const router = express.Router();
 import {
 	authUser,
 	getUserProfile,
+	getUsers,
 	registerUser,
 	updateUserProfile,
 } from '../controllers/userController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, isAdmin } from '../middleware/authMiddleware.js';
 
 //Login route
 router.post('/login', authUser);
@@ -19,7 +20,7 @@ router
 	.put(protect, updateUserProfile);
 
 //Home routes
-router.route('/').post(registerUser);
+router.route('/').post(registerUser).get(protect, isAdmin, getUsers);
 //router.route('/:id').get(getProductById);
 
 export default router;
