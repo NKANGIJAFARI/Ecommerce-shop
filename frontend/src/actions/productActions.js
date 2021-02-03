@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 import {
+	PRODUCT_DELETE_FAIL,
+	PRODUCT_DELETE_REQUEST,
+	PRODUCT_DELETE_SUCCESS,
 	PRODUCT_DETAILS_FAIL,
 	PRODUCT_DETAILS_REQUEST,
 	PRODUCT_DETAILS_SUCCESS,
@@ -54,3 +57,46 @@ export const listProductDetails = (id) => async (dispatch) => {
 		});
 	}
 };
+
+//===========================================================================
+//Get all the  order list of the client side
+
+export const deleteProducts = (productId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PRODUCT_DELETE_REQUEST,
+		});
+
+		/*Destructure userInfo from the userLogin state so that we get 
+        the token from that user info */
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token because its a protected route at the backend
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the put request to the order API
+		await axios.delete(`/api/products/${productId}`, config);
+
+		//If the post request is successful, data will be filled with the response
+		dispatch({
+			type: PRODUCT_DELETE_SUCCESS,
+		});
+	} catch (error) {
+		//When the post request fails, we shall dispatch failure
+		dispatch({
+			type: PRODUCT_DELETE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//-------------------------------------------------------------------------------
