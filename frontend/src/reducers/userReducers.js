@@ -22,6 +22,7 @@ import {
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_REQUEST,
+	USER_UPDATE_RESET,
 	USER_UPDATE_SUCCESS,
 } from '../constants/userConstants';
 
@@ -96,6 +97,21 @@ export const userListReducer = (state = { users: [] }, action) => {
 		case USER_LIST_RESET:
 			return { users: [] };
 
+		default:
+			return state;
+	}
+};
+
+//------------------------------------------------------------------------------------------
+
+export const userDeleteReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_DELETE_REQUEST:
+			return { loading: true };
+		case USER_DELETE_SUCCESS:
+			return { loading: false, users: action.payload };
+		case USER_DELETE_FAIL:
+			return { loading: false, error: action.payload };
 		default:
 			return state;
 	}

@@ -22,6 +22,9 @@ import {
 	USER_DELETE_REQUEST,
 	USER_DELETE_SUCCESS,
 	USER_DELETE_FAIL,
+	USER_UPDATE_REQUEST,
+	USER_UPDATE_SUCCESS,
+	USER_UPDATE_FAIL,
 } from '../constants/userConstants';
 
 //====================================================================================
@@ -288,6 +291,56 @@ export const deleteUsers = (userId) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_DELETE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//--------------------------------------------------------------------------------------
+
+//====================================================================================
+//Delete users by admin
+export const updateUser = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_UPDATE_REQUEST,
+		});
+
+		//Destructure userInfo from the userLogin state
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token
+		const config = {
+			headers: {
+				'content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the request to the API
+		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+		// dispatch({
+		// 	type: USER_LOGIN_SUCCESS,
+		// 	payload: data,
+		// });
+		dispatch({
+			type: USER_UPDATE_SUCCESS,
+		});
+
+		//To update the user in the sytem/ state, we dispatch user Details also
+		dispatch({
+			type: USER_DETAILS_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: USER_UPDATE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
