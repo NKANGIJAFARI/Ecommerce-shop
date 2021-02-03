@@ -18,7 +18,7 @@ const UserListScreen = ({ history }) => {
 	const { userInfo } = userLogin;
 
 	const userDelete = useSelector((state) => state.userDelete);
-	const { success: successDelete } = userDelete;
+	const { success: successDelete, error: errorDelete } = userDelete;
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
@@ -42,15 +42,19 @@ const UserListScreen = ({ history }) => {
 			{loading ? (
 				<Loader />
 			) : error ? (
-				<Message varient='danger'>{error}</Message>
+				<Message variant='danger'>{error}</Message>
 			) : (
 				<Table striped bordered hover responsive>
 					<thead>
+						<tr>
+							{errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+						</tr>
 						<tr>
 							<th>ID</th>
 							<th>NAME</th>
 							<th>EMAIL</th>
 							<th>ADMIN</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>

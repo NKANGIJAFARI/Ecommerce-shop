@@ -88,35 +88,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-// @desc    Get all users
-//@Route    Get /api/users
-//@access   Private and only to admin
-const getUsers = asyncHandler(async (req, res) => {
-	//Search for all the users
-	const users = await User.find({});
-
-	// When you receive the users, send a JSON back with a list of all user
-	res.json(users);
-});
-
-//@desc    Delete User
-//@Route   	DELETE /api/users/:id
-//@access   Private and only to admin
-const deleteUser = asyncHandler(async (req, res) => {
-	//Search for all the users
-	const user = await User.findById(req.params.id);
-
-	if (user) {
-		await user.remove();
-		res.json({ message: 'User removed' });
-	} else {
-		res.status(404);
-		throw new Error('User not found');
-	}
-	// When you receive the users, send a JSON back with a list of all user
-	res.json(users);
-});
-
 // @desc    Update user profile
 //@Route    Put /api/users/profile
 //@access   Private
@@ -151,6 +122,83 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc    Get all users
+//@Route    Get /api/users
+//@access   Private and only to admin
+const getUsers = asyncHandler(async (req, res) => {
+	//Search for all the users
+	const users = await User.find({});
+
+	// When you receive the users, send a JSON back with a list of all user
+	res.json(users);
+});
+
+//@desc    Delete User
+//@Route   	DELETE /api/users/:id
+//@access   Private and only to admin
+const deleteUser = asyncHandler(async (req, res) => {
+	//Check if the user ID is same as the logged logged in user id
+	if (req.params.id === req.user.id) {
+		res.status(401);
+		throw new Error(`You can't Delete a logged In account`);
+	}
+
+	// const user = await User.findById(req.params.id);
+
+	if (user) {
+		await user.remove();
+		res.json({ message: 'User removed' });
+	} else {
+		res.status(404);
+		throw new Error('User not found');
+	}
+	// When you receive the users, send a JSON back with a list of all user
+	res.json(users);
+});
+
+// @desc    Get all users
+//@Route    GET /api/users/:id
+//@access   Private and only to admin
+const getUserById = asyncHandler(async (req, res) => {
+	//Search for all the users
+	const user = await User.findById(req.params.id).select('-password');
+
+	if (user) {
+		res.json(user);
+	} else {
+		res.status(404);
+		throw new Error('User not found');
+	}
+});
+
+// @desc    Update user BY ADMIN
+//@Route    Put /api/users/profile
+//@access   Private and only to admins
+const updateUser = asyncHandler(async (req, res) => {
+	//Go to database and check for the user that is to be updated
+	const user = await User.findById(req.params.id);
+
+	//If the user exists, do the below
+	if (user) {
+		user.name = req.body.name || user.name;
+		user.email = req.body.email || user.email;
+		user.isAdmin = req.body.isAdmin;
+
+		const updatedUser = await user.save();
+
+		res.json({
+			_id: updatedUser.id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+		});
+	} else {
+		res.status(404);
+
+		throw new Error('User not found');
+	}
+});
+
 export {
 	authUser,
 	getUserProfile,
@@ -158,4 +206,6 @@ export {
 	updateUserProfile,
 	getUsers,
 	deleteUser,
+	updateUser,
+	getUserById,
 };
