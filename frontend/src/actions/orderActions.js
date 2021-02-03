@@ -181,7 +181,6 @@ export const listClientOrders = () => async (dispatch, getState) => {
 		//Make the put request to the order API
 		const { data } = await axios.get(`/api/order/myorders`, config);
 
-		console.log('This isn data', data);
 		//If the post request is successful, data will be filled with the response
 		dispatch({
 			type: ORDERS_LIST_CLIENT_SUCCESS,

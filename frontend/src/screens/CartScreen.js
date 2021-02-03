@@ -54,7 +54,6 @@ const CartScreen = (props) => {
 						{cartItems.map((item) => (
 							//product is the id
 							<ListGroup.Item key={item.product}>
-								{console.log('We are here', item, item.quantity)}
 								<Row>
 									<Col md={2}>
 										<Image src={item.image} alt={item.name} fluid rounded />
