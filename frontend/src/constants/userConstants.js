@@ -37,4 +37,14 @@ export const USER_DELETE_RESET = 'USER_DELETE_RESET';
 
 //--------------------------------------------------------------------------
 
+//=============================================================================
+//Get all the users
+
+export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST';
+export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
+export const USER_UPDATE_FAIL = 'USER_UPDATE_FAIL';
+export const USER_UPDATE_RESET = 'USER_UPDATE_RESET';
+
+//--------------------------------------------------------------------------
+
 export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';

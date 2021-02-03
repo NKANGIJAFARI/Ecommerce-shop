@@ -17,9 +17,12 @@ import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_REQUEST,
 	USER_REGISTER_SUCCESS,
+	USER_UPDATE_FAIL,
 	USER_UPDATE_PROFILE_FAIL,
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_REQUEST,
+	USER_UPDATE_SUCCESS,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -103,14 +106,16 @@ export const userListReducer = (state = { users: [] }, action) => {
 //=========================================================================================
 //Reducer to get all the users
 
-export const userDeleteReducer = (state = {}, action) => {
+export const userUpdateReducer = (state = {}, action) => {
 	switch (action.type) {
-		case USER_DELETE_REQUEST:
+		case USER_UPDATE_REQUEST:
 			return { loading: true };
-		case USER_DELETE_SUCCESS:
-			return { loading: false, users: action.payload };
-		case USER_DELETE_FAIL:
+		case USER_UPDATE_SUCCESS:
+			return { loading: false, success: true };
+		case USER_UPDATE_FAIL:
 			return { loading: false, error: action.payload };
+		case USER_UPDATE_RESET:
+			return { user: {} };
 		default:
 			return state;
 	}
