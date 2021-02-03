@@ -24,11 +24,7 @@ const OrderScreen = ({ match }) => {
 
 	//Get items from the orderPay state **************************
 	const orderPay = useSelector((state) => state.orderPay);
-	const {
-		success: successPay,
-		loading: loadingPay,
-		error: errorPay,
-	} = orderPay;
+	const { success: successPay, loading: loadingPay } = orderPay;
 	//************************************************************ */
 
 	useEffect(() => {
