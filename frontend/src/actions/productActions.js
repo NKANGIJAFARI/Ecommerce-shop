@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 import {
+	PRODUCT_CREATE_FAIL,
+	PRODUCT_CREATE_REQUEST,
+	PRODUCT_CREATE_SUCCESS,
 	PRODUCT_DELETE_FAIL,
 	PRODUCT_DELETE_REQUEST,
 	PRODUCT_DELETE_SUCCESS,
@@ -59,7 +62,7 @@ export const listProductDetails = (id) => async (dispatch) => {
 };
 
 //===========================================================================
-//Get all the  order list of the client side
+//Delete a product functionality
 
 export const deleteProducts = (productId) => async (dispatch, getState) => {
 	try {
@@ -92,6 +95,50 @@ export const deleteProducts = (productId) => async (dispatch, getState) => {
 		//When the post request fails, we shall dispatch failure
 		dispatch({
 			type: PRODUCT_DELETE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//-------------------------------------------------------------------------------
+
+//===========================================================================
+//Create a new product functionality
+
+export const createProduct = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PRODUCT_CREATE_REQUEST,
+		});
+
+		/*Destructure userInfo from the userLogin state so that we get 
+        the token from that user info */
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token because its a protected route at the backend
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the put request to the order API
+		const { data } = await axios.post(`/api/products`, {}, config);
+
+		//If the post request is successful, data will be filled with the response
+		dispatch({
+			type: PRODUCT_CREATE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		//When the post request fails, we shall dispatch failure
+		dispatch({
+			type: PRODUCT_CREATE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

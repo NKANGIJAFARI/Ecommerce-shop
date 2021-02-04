@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 
-import { listProducts, deleteProducts } from '../actions/productActions';
+import {
+	listProducts,
+	deleteProducts,
+	createProduct,
+} from '../actions/productActions';
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 
 const ProductListSreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -24,13 +29,37 @@ const ProductListSreen = ({ history }) => {
 		success: successOnDelete,
 	} = productDelete;
 
+	const productCreate = useSelector((state) => state.productCreate);
+	const {
+		loading: loadingOnCreate,
+		error: errorOnCreate,
+		success: successOnCreate,
+		product: createdProduct,
+	} = productCreate;
+
 	useEffect(() => {
-		if (userInfo && userInfo.isAdmin) {
-			dispatch(listProducts());
-		} else {
+		dispatch({ type: PRODUCT_CREATE_RESET });
+
+		/*Because only admins can access this page, when the userInfo.admin is not 
+		true, that means the token is expired thats why we redirect them to the 
+		login page rather than home or any page*/
+		if (!userInfo.isAdmin) {
 			history.push('/login');
 		}
-	}, [dispatch, history, userInfo, successOnDelete]);
+
+		if (successOnCreate) {
+			history.push(`/admin/products/${createdProduct._id}/edit`);
+		} else {
+			dispatch(listProducts());
+		}
+	}, [
+		dispatch,
+		history,
+		userInfo,
+		successOnDelete,
+		successOnCreate,
+		createdProduct,
+	]);
 
 	//==================================================================================
 	//Delete user Handler
@@ -45,7 +74,9 @@ const ProductListSreen = ({ history }) => {
 
 	//==================================================================================
 	//Create product handler
-	const createProductHandler = (product) => {};
+	const createProductHandler = (product) => {
+		dispatch(createProduct());
+	};
 
 	//----------------------------------------------------------------------------
 
@@ -61,8 +92,10 @@ const ProductListSreen = ({ history }) => {
 					</Button>
 				</Col>
 			</Row>
-			{loadingOnDelete && <Loader />}
+			{loadingOnDelete && !loadingOnCreate && !loading && <Loader />}
 			{errorOndelete && <Message variant='danger'>{errorOndelete}</Message>}
+			{loadingOnCreate && !loadingOnDelete && !loading && <Loader />}
+			{errorOnCreate && <Message variant='danger'>{errorOnCreate}</Message>}
 			{loading ? (
 				<Loader />
 			) : error ? (
