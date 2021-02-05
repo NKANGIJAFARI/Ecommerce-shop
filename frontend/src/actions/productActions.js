@@ -13,6 +13,9 @@ import {
 	PRODUCT_LIST_FAIL,
 	PRODUCT_LIST_REQUEST,
 	PRODUCT_LIST_SUCCESS,
+	PRODUCT_UPDATE_FAIL,
+	PRODUCT_UPDATE_REQUEST,
+	PRODUCT_UPDATE_SUCCESS,
 } from '../constants/productConstants';
 
 //This is an action that will go to the database to fetch the products
@@ -139,6 +142,57 @@ export const createProduct = () => async (dispatch, getState) => {
 		//When the post request fails, we shall dispatch failure
 		dispatch({
 			type: PRODUCT_CREATE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+//-------------------------------------------------------------------------------
+
+//===========================================================================
+//Update a new product functionality
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+	try {
+		console.log(product);
+
+		dispatch({
+			type: PRODUCT_UPDATE_REQUEST,
+		});
+
+		/*Destructure userInfo from the userLogin state so that we get 
+        the token from that user info */
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		//Then the config, specify the type of content to send
+		//from the body and the token because its a protected route at the backend
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		//Make the put request to the order API
+		const { data } = await axios.put(
+			`/api/products/${product._id}`,
+			product,
+			config
+		);
+
+		//If the post request is successful, data will be filled with the response
+		dispatch({
+			type: PRODUCT_UPDATE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		//When the post request fails, we shall dispatch failure
+		dispatch({
+			type: PRODUCT_UPDATE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
