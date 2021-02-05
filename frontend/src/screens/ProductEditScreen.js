@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +19,8 @@ const ProductEditScreen = ({ match, history }) => {
 	const [category, setCategory] = useState('');
 	const [brand, setBrand] = useState('');
 	const [description, setDescription] = useState('');
+	const [uploading, setUploading] = useState(false);
+	const [fileSelected, setFileSelected] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -51,6 +54,40 @@ const ProductEditScreen = ({ match, history }) => {
 		}
 	}, [product, productId, dispatch, history, successOnUpdate]);
 
+	//===========================================================================================
+	//Function to upload an image in the form
+	const uploadFileHandler = async (e) => {
+		const file = e.target.files[0];
+		const formData = new FormData();
+		formData.append('image', file);
+		setUploading(true);
+
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+
+			console.log('Readt to upload');
+			const { data } = await axios.post('/api/upload', formData, config);
+
+			if (data) {
+				console.log(data);
+			} else {
+				console.log('Got an error');
+			}
+			setImage(data);
+
+			setUploading(false);
+			setFileSelected(true);
+		} catch (error) {
+			//check for errors and stop spiiner when on error
+			console.log('This is the error', error.message);
+		}
+	};
+	//------------------------------------------------------------------------------------
+
 	//Handle what happens when a admin click to submit the form details to update user
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -74,7 +111,7 @@ const ProductEditScreen = ({ match, history }) => {
 			</Link>
 
 			<FormContainer>
-				<h1>Edit User</h1>
+				<h1>Edit Product</h1>
 				{loadingOnUpdate && !loading && !loading && <Loader />}
 				{errorOnUpdate && <Message variant='danger'>{errorOnUpdate}</Message>}
 				{/* {loadingOnUpdate && <Loader />}
@@ -109,6 +146,14 @@ const ProductEditScreen = ({ match, history }) => {
 								value={image}
 								onChange={(e) => setImage(e.target.value)}></Form.Control>
 						</Form.Group>
+						<Form.File
+							id='image-file'
+							label={
+								fileSelected ? 'Change selected file' : 'Choose a display file'
+							}
+							custom
+							onChange={uploadFileHandler}></Form.File>
+						{uploading && <Loader />}
 						<Form.Group controlId='brand'>
 							<Form.Label>Brand</Form.Label>
 							<Form.Control
