@@ -131,7 +131,7 @@ export const ordersListClientReducer = (state = { orders: [] }, action) => {
 //==========================================================================
 //Order Pay reducer, will be used to get the details of the order payment
 
-export const ordersListClientReducer = (state = { orders: [] }, action) => {
+export const ordersListReducer = (state = { orders: [] }, action) => {
 	switch (action.type) {
 		case ORDERS_LIST_REQUEST:
 			return {
