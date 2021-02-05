@@ -48,7 +48,7 @@ const reducer = combineReducers({
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	orderPay: orderPayReducer,
-	orderList: ordersListReducer,
+	ordersList: ordersListReducer,
 	ordersListClient: ordersListClientReducer,
 });
 
