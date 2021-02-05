@@ -101,4 +101,21 @@ const getUserOrders = asyncHandler(async (req, res) => {
 
 	res.json(orders);
 });
-export { addOrderItems, getOrderById, updateOrderToPaid, getUserOrders };
+
+// @desc   	GET all orders by admin
+//@Route    GET api/orders
+//@access   Private and only to admin
+const getOrders = asyncHandler(async (req, res) => {
+	/* We get the orders which has the user same as the logged In user id" */
+
+	const orders = await Order.find({}).populate('user', 'id name');
+
+	res.json(orders);
+});
+export {
+	addOrderItems,
+	getOrderById,
+	updateOrderToPaid,
+	getUserOrders,
+	getOrders,
+};
