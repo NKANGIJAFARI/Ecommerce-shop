@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 import products from './data/products.js';
 import connectDB from './config/db.js';
 import colors from 'colors';
@@ -15,6 +16,10 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const app = express();
 dotenv.config();
 connectDB();
+
+if (process.env.NODE_ENV === 'development') {
+	app.use(morgan('dev'));
+}
 
 //Passer to accept parse req.body, allows passing JSON data in body
 app.use(express.json());
