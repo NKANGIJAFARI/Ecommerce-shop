@@ -7,7 +7,9 @@ import Message from '../components/Message';
 import Product from '../components/Product';
 import { listProducts } from '../actions/productActions';
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+	const keyword = match.params.keyword;
+
 	const dispatch = useDispatch();
 
 	//We use a useSelector to select which part of the global state we need to use
@@ -18,8 +20,8 @@ const HomeScreen = () => {
 	const { loading, error, products } = productList;
 
 	useEffect(() => {
-		dispatch(listProducts());
-	}, [dispatch]);
+		dispatch(listProducts(keyword));
+	}, [dispatch, keyword]);
 
 	return (
 		<>
