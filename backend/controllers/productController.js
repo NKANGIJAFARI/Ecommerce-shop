@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import products from '../data/products.js';
+import Order from '../models/orderModel.js';
 
 import Product from '../models/productModel.js';
 
@@ -112,7 +113,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 
 		if (alreadyReviewed) {
 			res.status(400);
-			throw new Error('Product already reviewed');
+			throw new Error('You already reviewed');
 		}
 
 		const review = {
@@ -142,6 +143,62 @@ const createProductReview = asyncHandler(async (req, res) => {
 	}
 });
 
+/* This function below is to disallow users who have never purchased that product make
+a review on that same product, it will be fired when the user clicks button 
+"Make a review on the frontend" */
+/*const onlyPurchasedCanReview = asyncHandler(async (req, res) => {
+	//Find the product to be reviewed
+	const product = await Product.findById(req.params.id);
+
+	//Get all the orders of the user
+	const orders = await Order.find({ user: req.user._id });
+
+	//check if this user has an order where there is a purchase of that product
+	if (orders && product) {
+		let index = 0;
+		let orderedProductsIds = [];
+		while (index < orders.length) {
+			orders[index].orderItems.map((orderItem) =>
+				orderedProductsIds.push(orderItem.product)
+			);
+			index += 1;
+		}
+
+		if (orderedProductsIds) {
+			const everPurchased = orderedProductsIds.find(
+				(r) => r.toString() === product._id.toString()
+			);
+			if (everPurchased) {
+				res.status(201).json({ message: 'You can review now' });
+			} else {
+				throw new Error(
+					"Sorry, you can't review a product you never purchased"
+				);
+			}
+		} else {
+			throw new Error("Sorry, you can't review a product you never purchased");
+		}
+	} else {
+		res.status(404);
+		throw new Error('Found no match');
+	}
+
+
+	// if (product) {
+	// 	const alreadyReviewed = product.reviews.find(
+	// 		(r) => r.user.toString() === req.user._id.toString()
+	// 	);
+
+	// 	if (alreadyReviewed) {
+	// 		res.status(400);
+	// 		throw new Error('You already reviewed');
+	// 	}
+	// } else {
+	// 	res.status(404);
+	// 	throw new Error('Product Not Found');
+	// }
+});
+*/
 export {
 	getProducts,
 	getProductById,
