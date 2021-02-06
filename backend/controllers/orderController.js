@@ -91,6 +91,27 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc   	Update order to delivered
+//@Route    GET api/orders/:id/deliver
+//@access   Private and only for admin
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+	const order = await Order.findById(req.params.id);
+
+	if (order) {
+		order.isDelivered = true;
+		order.deliveredAt = Date.now();
+
+		//Save the order with the updated information, now is paid
+		const updatedOrder = await order.save();
+
+		//Receive back the updated order as json info
+		res.json(updatedOrder);
+	} else {
+		res.status(404);
+		throw new Error('Order Not Found');
+	}
+});
+
 // @desc   	GET looged in user Order by ID
 //@Route    GET api/orders/myorders
 //@access   Private
@@ -118,4 +139,5 @@ export {
 	updateOrderToPaid,
 	getUserOrders,
 	getOrders,
+	updateOrderToDelivered,
 };
