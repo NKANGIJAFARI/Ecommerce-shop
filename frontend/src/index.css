@@ -18,3 +18,31 @@ h2 {
 	font-size: 1.3rem;
 	padding: 0.5rem 0;
 }
+
+/* Carousel */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+	display: flex;
+	justify-content: center;
+}
+.carousel-caption {
+	position: absolute;
+	top: 0;
+}
+
+.carousel-caption h2 {
+	color: #fff;
+}
+.carousel img {
+	width: 30rem;
+	height: 20rem;
+	padding: 3rem;
+	margin: 4rem 0 1rem;
+	border-radius: 50%;
+}
+.carousel a {
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+}

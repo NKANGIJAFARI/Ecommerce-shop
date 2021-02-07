@@ -23,7 +23,7 @@ function App() {
 	return (
 		<Router>
 			<Header />
-			<main className='py-5'>
+			<main className='py-3'>
 				<Container>
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/register' component={RegisterScreen} />

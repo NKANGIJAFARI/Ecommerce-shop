@@ -13,13 +13,15 @@ import {
 } from '../controllers/productController.js';
 
 router.route('/').get(getProducts).post(protect, isAdmin, createProduct);
+
+router.route('/top').get(getTopProducts);
+
+router.route('/:id/reviews').post(protect, createProductReview);
+
 router
 	.route('/:id')
 	.get(getProductById)
 	.delete(protect, isAdmin, deleteProduct)
 	.put(protect, isAdmin, updateProduct);
-router.get('/top', getTopProducts);
-
-router.route('/:id/reviews').post(protect, createProductReview);
 
 export default router;
