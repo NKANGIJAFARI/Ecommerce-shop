@@ -5,10 +5,10 @@ import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
 
 // @desc    Fetch all products
-//@Route     Get /api/products
+//@Route    Get /api/products
 //@access   Public
 const getProducts = asyncHandler(async (req, res) => {
-	const pageSize = 2;
+	const pageSize = 10;
 	const page = Number(req.query.pageNumber) || 1;
 	const keyword = req.query.keyword
 		? {
@@ -19,8 +19,8 @@ const getProducts = asyncHandler(async (req, res) => {
 		  }
 		: {};
 
-	const count = await Product.count({ ...keyword });
-	const products = await Product.find(...keyword)
+	const count = await Product.countDocuments({ ...keyword });
+	const products = await Product.find({ ...keyword })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 

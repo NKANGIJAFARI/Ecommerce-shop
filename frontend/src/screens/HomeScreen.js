@@ -5,23 +5,23 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 import Product from '../components/Product';
+import Paginate from '../components/Paginate';
 import { listProducts } from '../actions/productActions';
 
 const HomeScreen = ({ match }) => {
 	const keyword = match.params.keyword;
+	const pageNumber = match.params.pageNumber || 1;
 
 	const dispatch = useDispatch();
 
 	//We use a useSelector to select which part of the global state we need to use
 
 	const productList = useSelector((state) => state.productList);
-
-	//Lets destructure from the productList
-	const { loading, error, products } = productList;
+	const { loading, error, products, page, pages } = productList;
 
 	useEffect(() => {
-		dispatch(listProducts(keyword));
-	}, [dispatch, keyword]);
+		dispatch(listProducts(keyword, pageNumber));
+	}, [dispatch, keyword, pageNumber]);
 
 	return (
 		<>
@@ -31,13 +31,20 @@ const HomeScreen = ({ match }) => {
 			) : error ? (
 				<Message variant='danger'>{error}</Message>
 			) : (
-				<Row>
-					{products.map((product) => (
-						<Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-							<Product product={product} />
-						</Col>
-					))}
-				</Row>
+				<>
+					<Row>
+						{products.map((product) => (
+							<Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+								<Product product={product} />
+							</Col>
+						))}
+					</Row>
+					<Paginate
+						pages={pages}
+						page={page}
+						keyword={keyword ? keyword : ''}
+					/>
+				</>
 			)}
 		</>
 	);
