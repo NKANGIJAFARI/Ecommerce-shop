@@ -115,6 +115,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 // @desc    Make a review on product
 //@Route    POST /api/products/review
 //@access   Private
+
 const createProductReview = asyncHandler(async (req, res) => {
 	const { rating, comment } = req.body;
 
@@ -156,6 +157,15 @@ const createProductReview = asyncHandler(async (req, res) => {
 		res.status(404);
 		throw new Error('Product Not Found');
 	}
+});
+
+// @desc    Get top rated products
+//@Route    GET /api/products/top
+//@access   Public
+const getTopProducts = asyncHandler(async (req, res) => {
+	const product = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+	res.json(products);
 });
 
 /* This function below is to disallow users who have never purchased that product make
@@ -221,4 +231,5 @@ export {
 	createProduct,
 	updateProduct,
 	createProductReview,
+	getTopProducts,
 };
