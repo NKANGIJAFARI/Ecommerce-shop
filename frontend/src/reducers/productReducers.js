@@ -15,6 +15,7 @@ import {
 	PRODUCT_DETAILS_SUCCESS,
 	PRODUCT_LIST_FAIL,
 	PRODUCT_LIST_REQUEST,
+	PRODUCT_LIST_RESET,
 	PRODUCT_LIST_SUCCESS,
 	PRODUCT_TOP_FAIL,
 	PRODUCT_TOP_REQUEST,
@@ -38,6 +39,8 @@ export const productListReducer = (state = { products: [] }, action) => {
 			};
 		case PRODUCT_LIST_FAIL:
 			return { loading: false, error: action.payload };
+		case PRODUCT_LIST_RESET:
+			return { products: [] };
 		default:
 			return state;
 	}

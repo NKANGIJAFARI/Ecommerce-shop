@@ -4,6 +4,7 @@ import {
 	ORDERS_LIST_CLIENT_RESET,
 	ORDER_PAY_RESET,
 } from '../constants/orderConstants';
+import { PRODUCT_LIST_RESET } from '../constants/productConstants';
 import {
 	USER_LOGIN_REQUEST,
 	USER_LOGIN_FAIL,
@@ -72,13 +73,14 @@ export const Login = (email, password) => async (dispatch) => {
 //====================================================================================
 //Logout actions
 export const logout = () => (dispatch) => {
-	localStorage.removeItem('userInfo');
 	dispatch({ type: USER_LOGOUT });
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: ORDERS_LIST_CLIENT_RESET });
 	dispatch({ type: USER_LIST_RESET });
+	dispatch({ type: PRODUCT_LIST_RESET });
 	dispatch({ type: ORDER_PAY_RESET });
 	dispatch({ type: ORDERS_DELIVER_RESET });
+	localStorage.removeItem('userInfo');
 };
 //--------------------------------------------------------------------------------------
 

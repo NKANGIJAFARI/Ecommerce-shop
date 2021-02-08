@@ -46,7 +46,7 @@ const ProductListSreen = ({ history, match }) => {
 		/*Because only admins can access this page, when the userInfo.admin is not 
 		true, that means the token is expired thats why we redirect them to the 
 		login page rather than home or any page*/
-		if (!userInfo.isAdmin) {
+		if (!userInfo || !userInfo.isAdmin) {
 			history.push('/login');
 		}
 
