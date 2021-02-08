@@ -122,8 +122,10 @@ const ProfileScreen = ({ history }) => {
 					<Loader />
 				) : errorOrders ? (
 					<Message variant='danger'>{errorOrders}</Message>
+				) : orders.length === 0 ? (
+					<Message variant='info'>You have no orders</Message>
 				) : (
-					<Table stripped borded hover responsive className='table-sm'>
+					<Table striped bordered hover responsive className='table-sm'>
 						<thead>
 							<tr>
 								<th>ID</th>
