@@ -227,9 +227,9 @@ const OrderScreen = ({ match, history }) => {
 									</ListGroup.Item>
 									{!order.isPaid && !userInfo.isAdmin && (
 										<ListGroup.Item>
-											{loadingPay && <Loader />}
+											{loadingPay && <Loader size='small' />}
 											{!sdkReady ? (
-												<Loader />
+												<Loader size='small' />
 											) : (
 												<PayPalButton
 													amount={order.totalPrice}
@@ -239,16 +239,19 @@ const OrderScreen = ({ match, history }) => {
 										</ListGroup.Item>
 									)}
 									{loadingOnDeliver && <Loader />}
-									{userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-										<ListGroup.Item>
-											<Button
-												type='button'
-												className='btn btn-block'
-												onClick={deliverHandler}>
-												Mark as Delivered
-											</Button>
-										</ListGroup.Item>
-									)}
+									{userInfo &&
+										userInfo.isAdmin &&
+										order.isPaid &&
+										!order.isDelivered && (
+											<ListGroup.Item>
+												<Button
+													type='button'
+													className='btn btn-block'
+													onClick={deliverHandler}>
+													Mark as Delivered
+												</Button>
+											</ListGroup.Item>
+										)}
 								</ListGroup>
 							</Card>
 						</Col>
