@@ -1,7 +1,5 @@
 //check for errors and stop spiiner when on error in uploadFileHandler.
 
-Give loader a prop of what size the loader should be accorind to different
-ocasions where its used. some places we need a small loader
 
 Give users different permissions
 

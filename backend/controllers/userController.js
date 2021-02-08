@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateTokens.js';
 
-// @desc    Auth the uer and get token
+// @desc    Auth the uSer and get token
 //@Route     Get /api/users/login
 //@access   Public
 const authUser = asyncHandler(async (req, res) => {

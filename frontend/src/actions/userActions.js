@@ -46,11 +46,11 @@ export const Login = (email, password) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post(
-			'/api/users/login',
-			{ email, password },
-			config
-		);
+		//change the email to lower case
+		const userData = { email, password };
+		userData.email = email.toLowerCase();
+
+		const { data } = await axios.post('/api/users/login', userData, config);
 
 		dispatch({
 			type: USER_LOGIN_SUCCESS,
@@ -98,11 +98,11 @@ export const Register = (name, email, password) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post(
-			'/api/users',
-			{ name, email, password },
-			config
-		);
+		//Construct an object to take user info provided
+		const userData = { name, email, password };
+		userData.email = email.toLowerCase();
+
+		const { data } = await axios.post('/api/users', userData, config);
 
 		dispatch({
 			type: USER_REGISTER_SUCCESS,
@@ -169,7 +169,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
 //====================================================================================
 //Update user profile
-export const updateUserProfile = (user) => async (dispatch, getState) => {
+export const updateUserProfile = ({ id, name, email, password }) => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: USER_UPDATE_PROFILE_REQUEST,
@@ -189,8 +192,13 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 			},
 		};
 
+		//Construct an object to take user info provided
+		const userData = { id, name, email, password };
+		userData.email = email.toLowerCase();
+		userData.name = name.toUpperCase();
+
 		//Make the request to the API
-		const { data } = await axios.put(`/api/users/profile`, user, config);
+		const { data } = await axios.put(`/api/users/profile`, userData, config);
 
 		// dispatch({
 		// 	type: USER_LOGIN_SUCCESS,
@@ -310,7 +318,10 @@ export const deleteUsers = (userId) => async (dispatch, getState) => {
 
 //====================================================================================
 //Delete users by admin
-export const updateUser = (user) => async (dispatch, getState) => {
+export const updateUser = ({ _id, name, email, isAdmin }) => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: USER_UPDATE_REQUEST,
@@ -320,6 +331,11 @@ export const updateUser = (user) => async (dispatch, getState) => {
 		const {
 			userLogin: { userInfo },
 		} = getState();
+
+		//Construct an object to take user info provided
+		const userData = { _id, name, email, isAdmin };
+		userData.email = email.toLowerCase();
+		userData.name = name.toUpperCase();
 
 		//Then the config, specify the type of content to send
 		//from the body and the token
@@ -331,7 +347,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
 		};
 
 		//Make the request to the API
-		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+		const { data } = await axios.put(`/api/users/${_id}`, userData, config);
 
 		// dispatch({
 		// 	type: USER_LOGIN_SUCCESS,
