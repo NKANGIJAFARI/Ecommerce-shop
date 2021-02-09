@@ -119,17 +119,38 @@ const updateProduct = asyncHandler(async (req, res) => {
 const createProductReview = asyncHandler(async (req, res) => {
 	const { rating, comment } = req.body;
 
-	//Find the product to be edited
+	//Find the product to be reviewed
 	const product = await Product.findById(req.params.id);
 
 	if (product) {
+		/*When there is a review given by the current Logged IN user, then
+		he/she will not be allowed to give another review on the same product*/
 		const alreadyReviewed = product.reviews.find(
 			(r) => r.user.toString() === req.user._id.toString()
 		);
 
 		if (alreadyReviewed) {
 			res.status(400);
-			throw new Error('You already reviewed');
+			throw new Error('You already reviewed this product');
+		}
+
+		/*when we have a product and user never reviewed it before,
+		then we check if the logged in user has ever bought this product,
+		if there is this product's id in his/her last orders, 
+		then he can give a review */
+
+		const orders = await Order.find({
+			'orderItems.product': `${product._id}`,
+			user: `${req.user._id}`,
+			// isPaid: true,
+			// isDelivered: true,
+		});
+
+		if (orders.length === 0) {
+			res.status(401);
+			throw new Error(
+				"Sorry, You can't review a product you never received before"
+			);
 		}
 
 		const review = {
@@ -171,7 +192,7 @@ const getTopProducts = asyncHandler(async (req, res) => {
 /* This function below is to disallow users who have never purchased that product make
 a review on that same product, it will be fired when the user clicks button 
 "Make a review on the frontend" */
-/*const onlyPurchasedCanReview = asyncHandler(async (req, res) => {
+const onlyPurchasedCanReview = asyncHandler(async (req, res) => {
 	//Find the product to be reviewed
 	const product = await Product.findById(req.params.id);
 
@@ -208,7 +229,6 @@ a review on that same product, it will be fired when the user clicks button
 		throw new Error('Found no match');
 	}
 
-
 	// if (product) {
 	// 	const alreadyReviewed = product.reviews.find(
 	// 		(r) => r.user.toString() === req.user._id.toString()
@@ -223,7 +243,7 @@ a review on that same product, it will be fired when the user clicks button
 	// 	throw new Error('Product Not Found');
 	// }
 });
-*/
+
 export {
 	getProducts,
 	getProductById,

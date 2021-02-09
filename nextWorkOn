@@ -5,8 +5,6 @@ Give users different permissions
 
 Make customers able to send messages to the store
 
-Change all entered emails to lower case on all entries
-
 bEFORE PRODUCT DETAILS SHOW, ADD A LOADER
 
 Add a function that whenever an order is done, decrease the products in stock
